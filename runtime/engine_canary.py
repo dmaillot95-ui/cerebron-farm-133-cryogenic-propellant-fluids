@@ -1,0 +1,4 @@
+import json,hashlib,pathlib,platform
+import math
+m=1000.;latent=445000.;heat=120.;t=86400.;boil=heat*t/latent;frac=boil/m;out={"initial_propellant_kg":m,"heat_leak_w":heat,"duration_s":t,"latent_heat_j_kg":latent,"boiloff_kg":boil,"boiloff_fraction":frac};ok=0<boil<m
+out.update({"farm":133,"engine":"python-engineering-batch-canary","engine_version":platform.python_version(),"test":"CRYO_BOILOFF","status":"REAL_ENGINE_CANARY_OK" if ok else "FAIL","epistemic_status":"ENGINEERING_CANARY_NOT_PHYSICAL_VALIDATION"});raw=json.dumps(out,sort_keys=True).encode();out["result_sha256"]=hashlib.sha256(raw).hexdigest();pathlib.Path("artifacts").mkdir(exist_ok=True);pathlib.Path("artifacts/f133_engine_canary.json").write_text(json.dumps(out,indent=2)+"\n");print(json.dumps(out));raise SystemExit(0 if ok else 1)
